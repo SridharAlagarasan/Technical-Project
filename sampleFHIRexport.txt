@@ -1,0 +1,284 @@
+sampleFHIRexport.txt
+{
+  "resourceType" : "Invoice",
+  // from Resource: id, meta, implicitRules, and language
+  // from DomainResource: text, contained, extension, and modifierExtension
+  "identifier" : [{ Identifier }], // Business Identifier for item
+  "status" : "<code>", // R!  draft | issued | balanced | cancelled | entered-in-error
+  "cancelledReason" : "<string>", // Reason for cancellation of this Invoice
+  "type" : { CodeableConcept }, // Type of Invoice
+  "subject" : { Reference(Patient|Group) }, // Recipient(s) of goods and services
+  "recipient" : { Reference(Organization|Patient|RelatedPerson) }, // Recipient of this invoice
+  "date" : "<dateTime>", // Invoice date / posting date
+  "participant" : [{ // Participant in creation of this Invoice
+    "role" : { CodeableConcept }, // Type of involvement in creation of this Invoice
+    "actor" : { Reference(Practitioner|Organization|Patient|PractitionerRole|
+    Device|RelatedPerson) } // R!  Individual who was involved
+  }],
+  "issuer" : { Reference(Organization) }, // Issuing Organization of Invoice
+  "account" : { Reference(Account) }, // Account that is being balanced
+  "lineItem" : [{ // Line items of this Invoice
+                  "sequence" : "<positiveInt>", // Sequence number of line item
+                  // chargeItem[x]: Reference to ChargeItem containing details of this line item or an inline billing code. One of these 2:
+                  
+                  "chargeItemCodeableConcept" : 
+                                                {
+                                                  // from Element: extension
+                                                  "coding" :  [
+                                                                {// from Element: extension
+                                                                  "system" : "<uri>", // Identity of the terminology system
+                                                                  "version" : "<string>", // Version of the system - if relevant
+                                                                  "code" : "<code>", // Symbol in syntax defined by the system
+                                                                  "display" : "<string>", // Representation defined by the system
+                                                                  "userSelected" : <boolean> // If this coding was chosen directly by the user
+                                                                }
+                                                              ], // Code defined by a terminology system
+                                                  "text" : "<string>" // Plain text representation of the concept
+                                                }
+                                                
+                  "priceComponent" :  [{ // Components of total line item price
+                                        "type" : "<code>", // R!  base | surcharge | deduction | discount | tax | informational
+                                        "code" : { CodeableConcept }, // Code identifying the specific component
+                                        "factor" : <decimal>, // Factor used for calculating this component
+                                        "amount" : { Money } // Monetary amount associated with this component
+                                      }]
+  }],
+  "totalPriceComponent" : [{ Content as for Invoice.lineItem.priceComponent }], // Components of Invoice total
+  "totalNet" :  {
+                  "value" : <decimal>, // Numerical value (with implicit precision)
+                  "currency" : "<code>" // ISO 4217 Currency Code
+                },
+  "totalGross" :  {
+                    "value" : <decimal>, // Numerical value (with implicit precision)
+                    "currency" : "<code>" // ISO 4217 Currency Code
+                  },
+  "paymentTerms" : "<markdown>", // Payment details
+  "note" : [
+              {
+                "authorReference" : { Reference(Practitioner|Patient|RelatedPerson|Organization) },
+                "authorString" : "<string>",
+                "time" : "YYYY-MM-DDThh:mm:ss+zz:zz", 
+                "text" : "<markdown>" 
+              }
+            ]
+}
+
+
+//Currency : "<code>" - ISO 4217 Currency Code
+
+Code  Display
+AED United Arab Emirates dirham
+AFN Afghan afghani
+ALL Albanian lek
+AMD Armenian dram
+ANG Netherlands Antillean guilder
+AOA Angolan kwanza
+ARS Argentine peso
+AUD Australian dollar
+AWG Aruban florin
+AZN Azerbaijani manat
+BAM Bosnia and Herzegovina convertible mark
+BBD Barbados dollar
+BDT Bangladeshi taka
+BGN Bulgarian lev
+BHD Bahraini dinar
+BIF Burundian franc
+BMD Bermudian dollar
+BND Brunei dollar
+BOB Boliviano
+BOV Bolivian Mvdol (funds code)
+BRL Brazilian real
+BSD Bahamian dollar
+BTN Bhutanese ngultrum
+BWP Botswana pula
+BYN Belarusian ruble
+BZD Belize dollar
+CAD Canadian dollar
+CDF Congolese franc
+CHE WIR Euro (complementary currency)
+CHF Swiss franc
+CHW WIR Franc (complementary currency)
+CLF Unidad de Fomento (funds code)
+CLP Chilean peso
+CNY Renminbi (Chinese) yuan[8]
+COP Colombian peso
+COU Unidad de Valor Real (UVR) (funds code)[9]
+CRC Costa Rican colon
+CUC Cuban convertible peso
+CUP Cuban peso
+CVE Cape Verde escudo
+CZK Czech koruna
+DJF Djiboutian franc
+DKK Danish krone
+DOP Dominican peso
+DZD Algerian dinar
+EGP Egyptian pound
+ERN Eritrean nakfa
+ETB Ethiopian birr
+EUR Euro
+FJD Fiji dollar
+FKP Falkland Islands pound
+GBP Pound sterling
+GEL Georgian lari
+GGP Guernsey Pound
+GHS Ghanaian cedi
+GIP Gibraltar pound
+GMD Gambian dalasi
+GNF Guinean franc
+GTQ Guatemalan quetzal
+GYD Guyanese dollar
+HKD Hong Kong dollar
+HNL Honduran lempira
+HRK Croatian kuna
+HTG Haitian gourde
+HUF Hungarian forint
+IDR Indonesian rupiah
+ILS Israeli new shekel
+IMP Isle of Man Pound
+INR Indian rupee
+IQD Iraqi dinar
+IRR Iranian rial
+ISK Icelandic króna
+JEP Jersey Pound
+JMD Jamaican dollar
+JOD Jordanian dinar
+JPY Japanese yen
+KES Kenyan shilling
+KGS Kyrgyzstani som
+KHR Cambodian riel
+KMF Comoro franc
+KPW North Korean won
+KRW South Korean won
+KWD Kuwaiti dinar
+KYD Cayman Islands dollar
+KZT Kazakhstani tenge
+LAK Lao kip
+LBP Lebanese pound
+LKR Sri Lankan rupee
+LRD Liberian dollar
+LSL Lesotho loti
+LYD Libyan dinar
+MAD Moroccan dirham
+MDL Moldovan leu
+MGA Malagasy ariary
+MKD Macedonian denar
+MMK Myanmar kyat
+MNT Mongolian tögrög
+MOP Macanese pataca
+MRU Mauritanian ouguiya
+MUR Mauritian rupee
+MVR Maldivian rufiyaa
+MWK Malawian kwacha
+MXN Mexican peso
+MXV Mexican Unidad de Inversion (UDI) (funds code)
+MYR Malaysian ringgit
+MZN Mozambican metical
+NAD Namibian dollar
+NGN Nigerian naira
+NIO Nicaraguan córdoba
+NOK Norwegian krone
+NPR Nepalese rupee
+NZD New Zealand dollar
+OMR Omani rial
+PAB Panamanian balboa
+PEN Peruvian Sol
+PGK Papua New Guinean kina
+PHP Philippine piso[13]
+PKR Pakistani rupee
+PLN Polish złoty
+PYG Paraguayan guaraní
+QAR Qatari riyal
+RON Romanian leu
+RSD Serbian dinar
+RUB Russian ruble
+RWF Rwandan franc
+SAR Saudi riyal
+SBD Solomon Islands dollar
+SCR Seychelles rupee
+SDG Sudanese pound
+SEK Swedish krona/kronor
+SGD Singapore dollar
+SHP Saint Helena pound
+SLL Sierra Leonean leone
+SOS Somali shilling
+SRD Surinamese dollar
+SSP South Sudanese pound
+STN São Tomé and Príncipe dobra
+SVC Salvadoran colón
+SYP Syrian pound
+SZL Swazi lilangeni
+THB Thai baht
+TJS Tajikistani somoni
+TMT Turkmenistan manat
+TND Tunisian dinar
+TOP Tongan paʻanga
+TRY Turkish lira
+TTD Trinidad and Tobago dollar
+TVD Tuvalu Dollar
+TWD New Taiwan dollar
+TZS Tanzanian shilling
+UAH Ukrainian hryvnia
+UGX Ugandan shilling
+USD United States dollar
+USN United States dollar (next day) (funds code)
+UYI Uruguay Peso en Unidades Indexadas (URUIURUI) (funds code)
+UYU Uruguayan peso
+UZS Uzbekistan som
+VEF Venezuelan bolívar
+VND Vietnamese đồng
+VUV Vanuatu vatu
+WST Samoan tala
+XAF CFA franc BEAC
+XAG Silver (one troy ounce)
+XAU Gold (one troy ounce)
+XBA European Composite Unit (EURCO) (bond market unit)
+XBB European Monetary Unit (E.M.U.-6) (bond market unit)
+XBC European Unit of Account 9 (E.U.A.-9) (bond market unit)
+XBD European Unit of Account 17 (E.U.A.-17) (bond market unit)
+XCD East Caribbean dollar
+XDR Special drawing rights
+XOF CFA franc BCEAO
+XPD Palladium (one troy ounce)
+XPF CFP franc (franc Pacifique)
+XPT Platinum (one troy ounce)
+XSU SUCRE
+XTS Code reserved for testing purposes
+XUA ADB Unit of Account
+XXX No currency
+YER Yemeni rial
+ZAR South African rand
+ZMW Zambian kwacha
+ZWL Zimbabwean dollar A/10
+
+{
+  "resourceType" : "Invoice",
+  "identifier" : [{ Identifier }], 
+  "status" : "<code> R!  draft | issued | balanced | cancelled | entered-in-error", 
+  "cancelledReason" : "<string>", 
+  "type" : { CodeableConcept }, 
+  "subject" : { Reference(Patient|Group) }, 
+  "recipient" : { Reference(Organization|Patient|RelatedPerson) }, 
+  "date": "YYYY-MM-DDThh:mm:ss+zz:zz",
+  "participant" : [{ 
+    "role" : { CodeableConcept }, 
+    "actor" : { Reference(Practitioner|Organization|Patient|PractitionerRole|Device|RelatedPerson) } 
+  }],
+  "issuer" : { Reference(Organization) }, 
+  "account" : { Reference(Account) }, 
+  "lineItem" : [{ 
+    "sequence" : "<positiveInt>", 
+    "chargeItemReference" : { Reference(ChargeItem) },
+    "chargeItemCodeableConcept" : { "coding" :  [ { "system" : "<uri> Identity of the terminology system", "version" : "<string> Version of the system - if relevant", "code" : "<code> Symbol in syntax defined by the system", "display" : "<string> Representation defined by the system", "userSelected" : true } ], // Code defined by a terminology system "text" : "<string> Plain text representation of the concept"},
+    "priceComponent" : [{ 
+      "type" : "<code> R!  base | surcharge | deduction | discount | tax | informational",
+      "code" : { "coding" :  [ { "system" : "<uri> Identity of the terminology system", "version" : "<string> Version of the system - if relevant", "code" : "<code> Symbol in syntax defined by the system", "display" : "<string> Representation defined by the system", "userSelected" : true } ], // Code defined by a terminology system "text" : "<string> Plain text representation of the concept" },
+      "factor" : 1,
+      "amount" : { "value" : 100, "currency" : "<code> ISO 4217 Currency Code"}
+    }]
+  }],
+  "totalPriceComponent" : [{ Content as for Invoice.lineItem.priceComponent }],
+  "totalNet" : { "value" : 100, "currency" : "<code> ISO 4217 Currency Code"}, 
+  "totalGross" : { "value" : 100, "currency" : "<code> ISO 4217 Currency Code"},
+  "paymentTerms" : "<markdown>", 
+  "note" : [ { "authorReference" : { "Reference(Practitioner|Patient|RelatedPerson|Organization)" }, "authorString" : "<string>", "time" : "YYYY-MM-DDThh:mm:ss+zz:zz", "text" : "<markdown>" } ]
+}
